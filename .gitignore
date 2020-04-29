@@ -33,3 +33,6 @@ nbdist/
 
 # specific files
 db.txt
+
+# Eclipse
+.settings/
