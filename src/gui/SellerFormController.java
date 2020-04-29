@@ -1,6 +1,8 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Seller;
@@ -34,7 +37,19 @@ public class SellerFormController implements Initializable {
 	@FXML
 	private TextField textName;
 	@FXML
+	private TextField textEmail;
+	@FXML
+	private DatePicker dpBirthDate;
+	@FXML
+	private TextField textBaseSalary;
+	@FXML
 	private Label labelErrorName;
+	@FXML
+	private Label labelErrorEmail;
+	@FXML
+	private Label labelErrorBithDate;
+	@FXML
+	private Label labelErrorBaseSalary;
 	@FXML
 	private Button buttonSave;
 	@FXML
@@ -96,7 +111,10 @@ public class SellerFormController implements Initializable {
 	@FXML
 	public void inicializeNodes() {
 		Constraints.setTextFieldInteger(textId);
-		Constraints.setTextFieldMaxLength(textName,30);
+		Constraints.setTextFieldMaxLength(textName,60);
+		Constraints.setTextFieldDouble(textBaseSalary);
+		Constraints.setTextFieldMaxLength(textEmail, 60);
+		Utils.formatDatePicker(dpBirthDate, "dd/MM/yyyy");
 	}
 	
 	public void updateFormData() {
@@ -105,6 +123,11 @@ public class SellerFormController implements Initializable {
 		}
 		textId.setText(String.valueOf(entity.getId()));
 		textName.setText(entity.getName());
+		textEmail.setText(entity.getEmail());
+		textBaseSalary.setText(String.format("%.2f", entity.getBaseSalary()));
+		if (entity.getBirthDate() != null) {
+			dpBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()));			
+		}
 	}
 	
 	public void subscribeDataChangeListener(DataChangeListener listener) {
